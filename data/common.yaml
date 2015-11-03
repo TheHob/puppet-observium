@@ -1,0 +1,13 @@
+---
+observium::users:
+observium::devices:
+observium::ldap_server:
+observium::ldap_binddn:
+observium::ldap_groups:
+observium::ldap_suffix:
+observium::ldap_groupbase:
+observium::ldap_attr:
+observium::ldap_objectclass:
+observium::ldap_groupmemberattr:
+observium::groupmembertype:
+observium::config_strings:

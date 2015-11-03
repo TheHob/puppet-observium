@@ -1,0 +1,9 @@
+.DS_Store
+.bundle
+.*.sw?
+pkg
+spec/fixtures/*
+!spec/fixtures/hiera.yaml
+.rspec_system
+.vagrant
+vendor

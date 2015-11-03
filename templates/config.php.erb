@@ -1,0 +1,60 @@
+<?php
+
+## Have a look in includes/defaults.inc.php for examples of settings you can set here. DO NOT EDIT defaults.inc.php!
+## This file is managed by Puppet
+
+// Database config
+$config['db_host'] = '<%= @db_host %>';
+$config['db_user'] = '<%= @db_user %>';
+$config['db_pass'] = '<%= @db_pass %>';
+$config['db_name'] = '<%= @db_name %>';
+
+// Base directory
+$config['install_dir'] = "<%= @base_path %>";
+
+// Default community list to use when adding/discovering
+$config['snmp']['community'] = array("public");
+
+// Authentication Model
+$config['auth_mechanism'] = "<%= @auth_method %>";    // default, other options: ldap, http-auth, please see documentation for config help
+
+// Enable alerter (not available in CE)
+#$config['poller-wrapper']['alerter'] = TRUE;
+
+// Set up a default alerter (email to a single address)
+$config['alerts']['alerter']['default']['descr']   = "Default Email Alert";
+$config['alerts']['alerter']['default']['type']    = "email";
+$config['alerts']['alerter']['default']['contact'] = "you@yourdomain.org";
+$config['alerts']['alerter']['default']['enable']  = TRUE;
+<%- if @auth_method == 'ldap' -%>
+//LDAP Authentication
+$config['auth_ldap_binddn'] = "<%= @ldap_binddn %>";
+$config['auth_ldap_bindpw'] = "<%= @ldap_bindpw %>";
+$config['auth_ldap_objectclass'] = "<%= @ldap_objectclass %>";
+$config['auth_ldap_bindanonymous'] = <%= @ldap_bindanonymous %>;
+$config['auth_ldap_server'] = "<%= @ldap_server %>";
+$config['auth_ldap_port'] = <%= @ldap_port %>;
+$config['auth_ldap_version'] = <%= @ldap_version %>;
+$config['auth_ldap_suffix'] = '<%= @ldap_suffix %>';
+$config['auth_ldap_groupbase'] = "<%= @ldap_groupbase %>";
+// Groups from Puppet
+<%- if @ldap_groups -%>
+<%- @ldap_groups.each do |group,value| -%>
+$config['auth_ldap_groups']['<%= group %>']['level'] = <%= value['level'] -%>;
+<%- end -%>
+<%- end -%>
+// Attribute mapping from Puppet
+<%- if @ldap_attr -%>
+<%- @ldap_attr.each do |attr,value| -%>
+$config['auth_ldap_attr']['<%= attr %>'] = "<%= value['mapto'] -%>";
+<%- end -%>
+<%- end -%>
+$config['auth_ldap_groupmemberattr'] = "<%= @ldap_groupmemberattr %>";
+$config['auth_ldap_groupmembertype'] = "<%= @ldap_groupmembertype %>";
+//End LDAP Authentication
+<%- end -%>
+// Additional configuration strings from Puppet
+<%- Array(@config_strings).each do |config,value| -%>
+<%= config %>
+<%- end -%>
+// End config.php
